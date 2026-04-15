@@ -1,0 +1,30 @@
+{% extends 'dashboard/base.html' %}
+{% block content %}
+<div style="max-width: 1000px; margin: 0 auto; text-align:left;">
+    <h1>Predictive Risk Patterns</h1>
+    <p style="color: #ffb6c1; margin-bottom: 30px;">Mapping forward-looking trend analysis from aggregated datasets.</p>
+
+    <div style="display:flex; gap: 20px; margin-bottom: 30px;">
+        <div class="card" style="flex:1;">
+            <img src="data:image/png;base64,{{ g1 }}" style="width:100%; border-radius: 8px;"/>
+        </div>
+        <div class="card" style="flex:1;">
+            <img src="data:image/png;base64,{{ g2 }}" style="width:100%; border-radius: 8px;"/>
+        </div>
+    </div>
+
+    <div class="card" style="background: rgba(255, 20, 147, 0.1); border: 1px solid rgba(255, 105, 180, 0.5);">
+        <h3 style="color: #fff; margin-top: 0; border-bottom: 2px solid #ff1493; padding-bottom: 10px;">📊 AI-Assisted Implementation Directive</h3>
+        <p style="color: #ffe6f0; font-size: 0.95rem; line-height: 1.6;">
+            <strong>Meaningful Predictive Insight:</strong> Extrapolating historical vector matrices serves a direct warning: specific socio-demographic intersections are nearing systemic collapse. Allowing the fusion of a localized infrastructure deficit overlapping an aggressive poverty dynamic guarantees irrecoverable retention wipeout inside 18 months.
+        </p>
+        <p style="color: #ffe6f0; font-size: 0.95rem; line-height: 1.6; margin-top: 15px;">
+            <strong>Recommended Policy Action:</strong>
+            <ul style="color: #ffb199; font-size: 0.9rem; padding-left: 20px;">
+                <li style="margin-bottom:10px;">Synthesize a <strong>Predictive Early Warning Mechanism</strong> integrated across Grade 8 transit systems specifically designed to intercept these highly vulnerable, high-probability fallout populations.</li>
+                <li>Abolish reactive-funding paradigms in favor of Preemptive Tactical Allocations. Resources must deploy into mathematically confirmed collapse-zones <em>before</em> the analytical pattern crests.</li>
+            </ul>
+        </p>
+    </div>
+</div>
+{% endblock %}

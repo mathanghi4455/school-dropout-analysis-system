@@ -1,0 +1,80 @@
+{% extends 'dashboard/base.html' %}
+{% block content %}
+<h1>Raw Database Registry</h1>
+<p style="color: #ffb6c1; margin-bottom: 20px;">Live preview mapping the top 100 rows of empirical staging variables.</p>
+
+<form method="GET" style="display: flex; gap: 10px; margin-bottom: 25px; max-width: 800px;">
+    <input type="text" name="state" value="{{ search_state }}" placeholder="Filter database entirely by State name..." style="flex:1; margin:0; padding:12px; border-radius:8px; border:1px solid #ff1493; background:rgba(0,0,0,0.4); color:white;" required>
+    <button type="submit" style="width: auto; margin:0; padding: 12px 30px;">🔍 Run Database Filter</button>
+    {% if search_state %}
+        <a href="{% url 'view_data' %}" style="padding: 12px 20px; color: #ffb199; text-decoration: none; border: 1px solid rgba(255,105,180,0.3); border-radius: 8px; font-weight:bold;">Clear Filters</a>
+    {% endif %}
+</form>
+
+<div class="card" style="max-width: 1000px; margin: 0 auto; overflow-x: auto; text-align: left; background: rgba(0,0,0,0.4);">
+    <style>
+        .data-table { width: 100%; border-collapse: collapse; color: #ffe6f0; font-family: monospace; }
+        .data-table th, .data-table td { padding: 10px; border: 1px solid rgba(255,105,180,0.2); font-size: 0.85rem; text-align: left; }
+        .data-table th { background: rgba(255,20,147,0.15); color: #fff; text-transform: uppercase; letter-spacing: 1px;}
+    </style>
+    {{ table|safe }}
+</div>
+
+<hr style="border: 0; border-top: 1px solid rgba(255, 105, 180, 0.3); margin: 50px 0;">
+
+<h2 id="add">➕ Contribute District Statistics</h2>
+<p style="color: #ffb6c1; margin-bottom: 30px;">Push new empirical data manually into the unverified staging architecture.</p>
+
+<div class="card auth-container" style="max-width: 800px; margin: 0 auto; background: rgba(255, 20, 147, 0.05);">
+    {% if success %}
+        <h3 style="color:#ffb199;">✅ Buffer Pipeline Initiated!</h3>
+        <p style="color: #fff;">New district parameters successfully injected into the centralized data buffer. An administrator will review before finalizing the commit.</p>
+        <a href="{% url 'view_data' %}" style="display:inline-block; margin-top:20px; color: #ff007f; text-decoration: none; font-weight: bold;">⬅ Reload Database Engine</a>
+    {% else %}
+        <form method="POST">
+            {% csrf_token %}
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left; margin-bottom: 25px;">
+                
+                <div>
+                    <label style="color:#fff; font-size:0.9rem; font-weight: bold;">State</label>
+                    <input type="text" name="state" placeholder="e.g. Tamil Nadu" required>
+                </div>
+                <div>
+                    <label style="color:#fff; font-size:0.9rem; font-weight: bold;">District</label>
+                    <input type="text" name="district" placeholder="e.g. Chennai" required>
+                </div>
+                <div>
+                    <label style="color:#fff; font-size:0.9rem; font-weight: bold;">Reporting Year</label>
+                    <input type="number" name="year" placeholder="e.g. 2024" required>
+                </div>
+                <div>
+                    <label style="color:#fff; font-size:0.9rem; font-weight: bold;">Primary Dropout (%)</label>
+                    <input type="number" step="0.01" name="primary_dropout" placeholder="0.00" required>
+                </div>
+                <div>
+                    <label style="color:#fff; font-size:0.9rem; font-weight: bold;">Secondary Dropout (%)</label>
+                    <input type="number" step="0.01" name="secondary_dropout" placeholder="0.00" required>
+                </div>
+                <div>
+                    <label style="color:#fff; font-size:0.9rem; font-weight: bold;">Male Sec. Dropout (%)</label>
+                    <input type="number" step="0.01" name="male_dropout" placeholder="0.00" required>
+                </div>
+                <div>
+                    <label style="color:#fff; font-size:0.9rem; font-weight: bold;">Female Sec. Dropout (%)</label>
+                    <input type="number" step="0.01" name="female_dropout" placeholder="0.00" required>
+                </div>
+                <div>
+                    <label style="color:#fff; font-size:0.9rem; font-weight: bold;">Socioeconomic Score (0-100)</label>
+                    <input type="number" name="socio_score" placeholder="e.g. 68" required>
+                </div>
+                <div>
+                    <label style="color:#fff; font-size:0.9rem; font-weight: bold;">Infrastructure Quality (0-100)</label>
+                    <input type="number" name="infra_score" placeholder="e.g. 85" required>
+                </div>
+            </div>
+            
+            <button type="submit" style="width: 100%;">Push to Staging Server</button>
+        </form>
+    {% endif %}
+</div>
+{% endblock %}

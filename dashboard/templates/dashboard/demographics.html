@@ -1,0 +1,59 @@
+{% extends 'dashboard/base.html' %}
+{% block content %}
+
+<div class="page-header">
+    <h1>👥 Demographic Imbalance Analysis</h1>
+    <p>Tracking secondary dropout vulnerabilities by gender — identifying where inequality is most acute.</p>
+</div>
+
+<div style="display:grid; grid-template-columns: 1.1fr 1fr; gap:24px; max-width:1100px; margin:0 auto; align-items:start;">
+
+    <div class="card" style="text-align:center;">
+        <div class="card-title">🔵 National Gender Disparity — Donut Chart</div>
+        <div class="chart-wrap">
+            <img src="data:image/png;base64,{{ g_demo }}" style="width:100%; border-radius:10px;" />
+        </div>
+        <p style="color:var(--muted,#c897b0); font-size:0.8rem; margin-top:12px; line-height:1.5; text-align:left;">
+            National-level secondary dropout split between male and female students, aggregated from UDISE+ records.
+        </p>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:16px;">
+
+        <div class="insight-banner" style="margin-bottom:0;">
+            <span class="ib-icon">👉</span>
+            <div>
+                <div class="ib-label">Used to identify</div>
+                <div class="ib-text">Gender inequality — which gender faces higher dropout risk and where</div>
+            </div>
+        </div>
+
+        <div class="policy-box">
+            <h3>📊 Executive Policy Insight</h3>
+            <p><strong>Education Challenge Exposed:</strong> The data models capture an accelerating gender disparity at the secondary level. Abandonment rates spike heavily — primarily triggered by external societal pressures rather than academic limitations.
+            </p>
+            <p><strong>Policy Deployment Needed:</strong></p>
+            <ul>
+                <li>Execute <strong>targeted financial subsidies</strong> and scholarship incentives exclusively tuned for female secondary enrollment.</li>
+                <li>Mandate <strong>infrastructure thresholds</strong> (dedicated sanitary hygiene access) to neutralize a known adolescent dropout trigger.</li>
+                <li>Establish <strong>community-level transport corridors</strong> unlocking safety accessibility for remote rural districts.</li>
+            </ul>
+        </div>
+
+        <div class="card" style="padding:18px 22px;">
+            <div class="card-title">📌 Key Metric</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                <div style="background:rgba(25,118,210,0.12); border:1px solid rgba(25,118,210,0.3); border-radius:10px; padding:14px; text-align:center;">
+                    <div style="font-size:1.6rem; font-weight:800; color:#64b5f6;">♂</div>
+                    <div style="font-size:0.78rem; color:var(--muted,#c897b0); margin-top:4px;">Male Dropout</div>
+                </div>
+                <div style="background:rgba(255,20,147,0.12); border:1px solid rgba(255,20,147,0.3); border-radius:10px; padding:14px; text-align:center;">
+                    <div style="font-size:1.6rem; font-weight:800; color:#ff69b4;">♀</div>
+                    <div style="font-size:0.78rem; color:var(--muted,#c897b0); margin-top:4px;">Female Dropout</div>
+                </div>
+            </div>
+            <p style="color:var(--muted,#c897b0); font-size:0.78rem; margin-top:12px; text-align:center;">See chart for comparative percentages</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

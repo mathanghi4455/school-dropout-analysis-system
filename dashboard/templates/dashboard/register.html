@@ -1,0 +1,22 @@
+{% extends 'dashboard/base.html' %}
+{% block content %}
+<div class="card auth-container">
+    <h2 style="color:white; margin-top:0;">Create Profile</h2>
+    <p style="color: #ffb6c1; font-size: 0.9rem;">Enroll securely to access sensitive statistical models.</p>
+    <form method="post">
+        {% csrf_token %}
+        <div style="text-align: left; margin-bottom: 20px;">
+            <label style="color:#fff; font-size:0.9rem; font-weight:bold;">Choose Username:</label>
+            <input type="text" name="username" required>
+            
+            <label style="color:#fff; font-size:0.9rem; font-weight:bold;">Choose Password:</label>
+            <input type="password" name="password" required>
+        </div>
+        {% if error %}
+        <p style="color:#ff0844; font-weight:bold; margin-bottom:15px;">{{ error }}</p>
+        {% endif %}
+        <button type="submit">Create Account & Login</button>
+    </form>
+    <p style="margin-top: 20px;">Already enrolled? <a href="{% url 'login' %}" style="color: #ff0844; text-decoration: none; font-weight: bold;">Login here</a></p>
+</div>
+{% endblock %}

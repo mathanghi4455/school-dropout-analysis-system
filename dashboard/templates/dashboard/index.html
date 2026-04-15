@@ -1,0 +1,60 @@
+{% extends 'dashboard/base.html' %}
+{% block content %}
+
+<div class="page-header" style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px;">
+    <div>
+        <h1>📍 Regional Overview &amp; Hotspots</h1>
+        <p>Primary vs secondary dropout rates across states and districts.</p>
+    </div>
+    <form method="GET" style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+        <input type="text" name="state" value="{{ search_state }}"
+               placeholder="Search a specific State…"
+               style="width:230px; margin:0;">
+        <button type="submit">🔍 Drill Down</button>
+        {% if search_state %}
+            <a href="{% url 'regional' %}" class="btn" style="background: rgba(255,105,180,0.15); border:1px solid rgba(255,105,180,0.3);">✕ Clear</a>
+        {% endif %}
+    </form>
+</div>
+
+{% if search_state %}
+<div class="insight-banner">
+    <span class="ib-icon">📍</span>
+    <div>
+        <div class="ib-label">Drilled into State</div>
+        <div class="ib-text">Showing district-level breakdown for <strong>{{ search_state|upper }}</strong></div>
+    </div>
+</div>
+{% endif %}
+
+<div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; max-width:1100px; margin:0 auto;">
+    <div class="card">
+        <div class="card-title">📊 Primary vs Secondary Dropout Rates</div>
+        <div class="chart-wrap">
+            <img src="data:image/png;base64,{{ g1 }}" style="width:100%;" />
+        </div>
+        <p style="color:var(--muted,#c897b0); font-size:0.8rem; margin-top:12px; line-height:1.5;">
+            Stacked comparison reveals the layered impact of dropout risk across educational stages.
+        </p>
+    </div>
+    <div class="card">
+        <div class="card-title">🚨 High-Risk Geographic Corridors</div>
+        <div class="chart-wrap">
+            <img src="data:image/png;base64,{{ g2 }}" style="width:100%;" />
+        </div>
+        <p style="color:var(--muted,#c897b0); font-size:0.8rem; margin-top:12px; line-height:1.5;">
+            Districts with the highest secondary dropout density requiring immediate policy intervention.
+        </p>
+    </div>
+</div>
+
+<div class="policy-box" style="max-width:1100px; margin:0 auto 10px;">
+    <h3>📊 Regional Policy Insight</h3>
+    <p><strong>Finding:</strong> State and district-level data exposes clear geographic clusters — some regions carry 2–3× the national average dropout rate, driven by compounding rural access barriers and resource deficits.</p>
+    <ul>
+        <li>Deploy <strong>mobile school units</strong> and district-level resource packs targeting the top-5 highest-risk corridors.</li>
+        <li>Enforce <strong>rural infrastructure mandates</strong> — roads, transport, and school proximity — as prerequisites for regional education funding.</li>
+        <li>Introduce <strong>state performance dashboards</strong> visible to legislators to drive accountability.</li>
+    </ul>
+</div>
+{% endblock %}

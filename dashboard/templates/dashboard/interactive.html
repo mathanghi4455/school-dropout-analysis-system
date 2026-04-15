@@ -1,0 +1,167 @@
+{% extends 'dashboard/base.html' %}
+{% block content %}
+
+<div class="page-header">
+    <h1>⚡ Interactive Analysis Dashboard</h1>
+    <p>Filter by state and select a category to generate a chart with annotated values.</p>
+</div>
+
+<!-- Single form wraps search + category buttons so both are submitted together -->
+<form method="POST" id="cat-form">
+    {% csrf_token %}
+
+    <!-- ── State Search ───────────────────────────────── -->
+    <div style="margin-bottom: 20px; display: flex; align-items: flex-end; gap: 12px; flex-wrap: wrap;">
+        <div style="flex:1; min-width: 240px;">
+            <label style="display:block; font-size:0.78rem; font-weight:600; color:#c897b0; margin-bottom:6px; letter-spacing:0.04em;">🔍 FILTER BY STATE (optional)</label>
+            <input
+                type="text"
+                name="search_state"
+                id="search_state"
+                value="{{ search_state }}"
+                list="state-list"
+                placeholder="e.g. Bihar, Kerala, Maharashtra..."
+                autocomplete="off"
+                style="width:100%; padding:11px 16px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,105,180,0.3); border-radius:10px; color:#fff; font-family:inherit; font-size:0.9rem; outline:none;"
+                onfocus="this.style.borderColor='#ff1493'; this.style.boxShadow='0 0 0 3px rgba(255,20,147,0.12)'"
+                onblur="this.style.borderColor='rgba(255,105,180,0.3)'; this.style.boxShadow='none'"
+            >
+            <datalist id="state-list">
+                {% for state in available_states %}<option value="{{ state }}">{% endfor %}
+            </datalist>
+        </div>
+        <button type="submit" name="category" value="{{ selected_cat|default:'Overview' }}"
+            style="padding:11px 20px; white-space:nowrap;">
+            🔍 Apply Filter
+        </button>
+        {% if search_state %}
+        <a href="/" style="padding:11px 16px; background:rgba(255,255,255,0.07); border:1px solid rgba(255,105,180,0.2); border-radius:10px; color:#c897b0; text-decoration:none; font-size:0.86rem; display:inline-block;">✕ Clear</a>
+        {% endif %}
+    </div>
+
+    {% if search_state %}
+    <div style="background:rgba(255,20,147,0.08); border:1px solid rgba(255,20,147,0.25); border-left:3px solid #ff1493; border-radius:10px; padding:10px 16px; margin-bottom:18px; font-size:0.85rem; color:#ff69b4;">
+        📍 Showing data filtered for: <strong>{{ search_state }}</strong>
+    </div>
+    {% endif %}
+
+    <!-- ── Category Button Grid ──────────────────────── -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px; margin-bottom: 28px;">
+
+        <button type="submit" name="category" value="Region"
+            class="cat-btn {% if selected_cat == 'Region' %}cat-active{% endif %}" id="btn-Region">
+            <span class="cat-num">1️⃣</span>
+            <span class="cat-name">Region / Location</span>
+            <span class="cat-sub">State · District · Rural vs Urban</span>
+        </button>
+
+        <button type="submit" name="category" value="Education"
+            class="cat-btn {% if selected_cat == 'Education' %}cat-active{% endif %}" id="btn-Education">
+            <span class="cat-num">2️⃣</span>
+            <span class="cat-name">Educational Level</span>
+            <span class="cat-sub">Primary · Secondary · Higher Sec.</span>
+        </button>
+
+        <button type="submit" name="category" value="Gender"
+            class="cat-btn {% if selected_cat == 'Gender' %}cat-active{% endif %}" id="btn-Gender">
+            <span class="cat-num">3️⃣</span>
+            <span class="cat-name">Gender</span>
+            <span class="cat-sub">Male vs Female Inequality</span>
+        </button>
+
+        <button type="submit" name="category" value="Socioeconomic"
+            class="cat-btn {% if selected_cat == 'Socioeconomic' %}cat-active{% endif %}" id="btn-Socioeconomic">
+            <span class="cat-num">4️⃣</span>
+            <span class="cat-name">Socioeconomic Status</span>
+            <span class="cat-sub">Poor · Middle · Rich Impact</span>
+        </button>
+
+        <button type="submit" name="category" value="Infrastructure"
+            class="cat-btn {% if selected_cat == 'Infrastructure' %}cat-active{% endif %}" id="btn-Infrastructure">
+            <span class="cat-num">5️⃣</span>
+            <span class="cat-name">Infrastructure Factors</span>
+            <span class="cat-sub">Schools · Facilities · Transport</span>
+        </button>
+
+        <button type="submit" name="category" value="Time"
+            class="cat-btn {% if selected_cat == 'Time' %}cat-active{% endif %}" id="btn-Time">
+            <span class="cat-num">6️⃣</span>
+            <span class="cat-name">Time / Year</span>
+            <span class="cat-sub">Trend Analysis Over Years</span>
+        </button>
+
+        <button type="submit" name="category" value="DropoutRate"
+            class="cat-btn {% if selected_cat == 'DropoutRate' %}cat-active{% endif %}" id="btn-DropoutRate">
+            <span class="cat-num">7️⃣</span>
+            <span class="cat-name">Dropout Rate</span>
+            <span class="cat-sub">Target Output Variable</span>
+        </button>
+    </div>
+</form>
+
+{% if insights_list %}
+<div class="card" style="margin-bottom: 24px;">
+    <div class="card-title">💡 Automated Analytical Insights</div>
+    <ul style="color: var(--text); padding-left: 20px; line-height: 1.6;">
+        {% for insight_str in insights_list %}
+        <li style="margin-bottom: 8px;">{{ insight_str }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+{% if inequality_ranking %}
+<div class="card" style="margin-bottom: 24px;">
+    <div class="card-title">⚖️ Inequality &amp; Rankings</div>
+    <p style="color: var(--text); line-height: 1.6; white-space: pre-line;">{{ inequality_ranking }}</p>
+</div>
+{% endif %}
+
+{% if g_dyn %}
+<div class="card" style="max-width: 960px; margin: 0 auto 24px;">
+    <div class="card-title">📊 {{ selected_cat_label }}{% if search_state %} — {{ search_state }}{% endif %}</div>
+    <div class="chart-wrap">
+        <img src="data:image/png;base64,{{ g_dyn }}" style="width:100%; border-radius: 10px;" />
+    </div>
+    {% if speech_text %}
+    <div class="speech-box">
+        <div class="sb-label">🎤 Say this in your presentation</div>
+        <div class="sb-text">"{{ speech_text }}"</div>
+    </div>
+    {% endif %}
+</div>
+{% endif %}
+
+<style>
+.cat-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    background: rgba(255,20,147,0.05);
+    border: 1px solid rgba(255,105,180,0.18);
+    border-radius: 14px;
+    padding: 16px 18px;
+    cursor: pointer;
+    transition: all 0.22s ease;
+    text-align: left;
+    width: 100%;
+    color: #ffe6f0;
+    font-family: inherit;
+}
+.cat-btn:hover {
+    background: rgba(255,20,147,0.14);
+    border-color: rgba(255,20,147,0.45);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 24px rgba(255,20,147,0.18);
+}
+.cat-active {
+    background: linear-gradient(135deg, rgba(255,20,147,0.22), rgba(106,27,154,0.14)) !important;
+    border-color: #ff1493 !important;
+    box-shadow: 0 0 20px rgba(255,20,147,0.3), inset 0 1px 0 rgba(255,255,255,0.05) !important;
+}
+.cat-num { font-size: 1.4rem; line-height: 1; }
+.cat-name { font-size: 0.88rem; font-weight: 700; color: #fff; }
+.cat-sub { font-size: 0.74rem; color: #c897b0; font-weight: 400; line-height: 1.3; }
+</style>
+{% endblock %}

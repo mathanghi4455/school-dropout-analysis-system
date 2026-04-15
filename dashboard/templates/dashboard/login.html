@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDG 4 — Dropout Analysis India | Login</title>
+    <meta name="description" content="Sign in to access the India School Dropout Analysis Dashboard powered by UDISE+ data.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --pink:     #ff1493;
+            --pink-mid: #ff69b4;
+            --purple:   #6a1b9a;
+            --dark:     #0d0010;
+            --card:     rgba(255,255,255,0.04);
+            --border:   rgba(255,105,180,0.2);
+            --text:     #ffe6f0;
+            --muted:    #c897b0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: stretch;
+            overflow: hidden;
+        }
+
+        /* ── Animated Background ── */
+        .bg {
+            position: fixed; inset: 0; z-index: 0;
+            background:
+                radial-gradient(ellipse 80% 60% at 20% 10%, rgba(106,27,154,0.38) 0%, transparent 60%),
+                radial-gradient(ellipse 70% 50% at 80% 80%, rgba(255,20,147,0.28) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 40% at 60% 20%, rgba(255,105,180,0.15) 0%, transparent 50%);
+            animation: bgPulse 8s ease-in-out infinite alternate;
+        }
+        @keyframes bgPulse {
+            0%   { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+
+        /* Floating orbs */
+        .orb {
+            position: fixed; border-radius: 50%;
+            filter: blur(80px); opacity: 0.22;
+            animation: float 12s ease-in-out infinite;
+        }
+        .orb-1 { width: 420px; height: 420px; background: #ff1493; top: -100px; left: -100px; animation-delay: 0s; }
+        .orb-2 { width: 300px; height: 300px; background: #6a1b9a; bottom: -80px; right: -80px; animation-delay: -4s; }
+        .orb-3 { width: 180px; height: 180px; background: #ff69b4; top: 50%; left: 40%; animation-delay: -8s; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50%       { transform: translateY(-30px) scale(1.05); }
+        }
+
+        /* ── Layout ── */
+        .container {
+            position: relative; z-index: 1;
+            display: flex; width: 100vw; min-height: 100vh;
+        }
+
+        /* ── Hero Panel (left) ── */
+        .hero {
+            flex: 1.2;
+            display: flex; flex-direction: column;
+            justify-content: center; padding: 60px 64px;
+            animation: slideLeft 0.7s ease both;
+        }
+        @keyframes slideLeft { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(255,20,147,0.12);
+            border: 1px solid rgba(255,20,147,0.3);
+            border-radius: 50px; padding: 6px 16px;
+            font-size: 0.75rem; font-weight: 600;
+            color: #ff69b4; letter-spacing: 0.05em;
+            margin-bottom: 28px; width: fit-content;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 4vw, 3.4rem);
+            font-weight: 900; line-height: 1.15;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff 30%, #ff69b4 70%, #ff1493 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.05rem; color: var(--muted); line-height: 1.7;
+            max-width: 520px; margin-bottom: 40px;
+        }
+
+        .stats-row {
+            display: flex; gap: 32px; flex-wrap: wrap;
+        }
+        .stat {
+            display: flex; flex-direction: column; gap: 4px;
+        }
+        .stat-num {
+            font-size: 1.8rem; font-weight: 800;
+            background: linear-gradient(135deg, #ff1493, #ff69b4);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .stat-label { font-size: 0.78rem; color: var(--muted); font-weight: 500; }
+
+        .features { margin-top: 48px; display: flex; flex-direction: column; gap: 14px; }
+        .feature { display: flex; align-items: center; gap: 12px; font-size: 0.9rem; color: var(--muted); }
+        .feature-icon {
+            width: 32px; height: 32px; border-radius: 8px;
+            background: rgba(255,20,147,0.12); border: 1px solid rgba(255,20,147,0.2);
+            display: flex; align-items: center; justify-content: center; font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        /* ── Login Panel (right) ── */
+        .login-panel {
+            flex: 0 0 440px;
+            display: flex; align-items: center; justify-content: center;
+            padding: 40px 48px;
+            background: rgba(255,255,255,0.025);
+            border-left: 1px solid var(--border);
+            backdrop-filter: blur(20px);
+            animation: slideRight 0.7s ease 0.15s both;
+        }
+        @keyframes slideRight { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+
+        .login-card { width: 100%; }
+
+        .login-logo { font-size: 2rem; margin-bottom: 8px; }
+        .login-card h2 {
+            font-size: 1.55rem; font-weight: 800; margin-bottom: 6px;
+            color: #fff;
+        }
+        .login-card .subtitle {
+            font-size: 0.85rem; color: var(--muted); margin-bottom: 36px;
+        }
+
+        /* Error banner */
+        .error-banner {
+            background: rgba(255,20,90,0.12);
+            border: 1px solid rgba(255,20,90,0.35);
+            border-radius: 10px; padding: 12px 16px;
+            font-size: 0.85rem; color: #ff6090;
+            margin-bottom: 20px;
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        /* Form fields */
+        .field { margin-bottom: 18px; }
+        .field label {
+            display: block; font-size: 0.82rem; font-weight: 600;
+            color: var(--muted); margin-bottom: 7px; letter-spacing: 0.03em;
+        }
+        .field input {
+            width: 100%; padding: 12px 16px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,105,180,0.2);
+            border-radius: 10px; font-size: 0.92rem;
+            color: #fff; font-family: inherit;
+            outline: none; transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+        }
+        .field input:focus {
+            border-color: #ff1493;
+            box-shadow: 0 0 0 3px rgba(255,20,147,0.12);
+            background: rgba(255,255,255,0.08);
+        }
+        .field input::placeholder { color: rgba(255,255,255,0.25); }
+
+        .login-btn {
+            width: 100%; padding: 14px;
+            background: linear-gradient(135deg, #ff1493, #6a1b9a);
+            border: none; border-radius: 12px;
+            font-size: 0.95rem; font-weight: 700;
+            color: #fff; cursor: pointer; font-family: inherit;
+            letter-spacing: 0.03em;
+            transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+            box-shadow: 0 4px 24px rgba(255,20,147,0.35);
+            margin-top: 8px;
+        }
+        .login-btn:hover {
+            opacity: 0.92; transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255,20,147,0.45);
+        }
+        .login-btn:active { transform: translateY(0); }
+
+        .hint {
+            margin-top: 24px; padding: 14px 16px;
+            background: rgba(255,20,147,0.06);
+            border: 1px solid rgba(255,20,147,0.12);
+            border-radius: 10px; font-size: 0.78rem; color: var(--muted);
+            line-height: 1.5;
+        }
+        .hint strong { color: #ff69b4; }
+
+        .divider {
+            display: flex; align-items: center; gap: 12px;
+            margin: 24px 0; color: var(--muted); font-size: 0.78rem;
+        }
+        .divider::before, .divider::after {
+            content: ''; flex: 1; height: 1px;
+            background: rgba(255,105,180,0.15);
+        }
+
+        .footer-note {
+            margin-top: 28px; text-align: center;
+            font-size: 0.75rem; color: rgba(200,151,176,0.5);
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .hero { display: none; }
+            .login-panel { flex: 1; border-left: none; }
+        }
+    </style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<div class="container">
+    <!-- ── Hero Left ── -->
+    <div class="hero">
+        <div class="hero-badge">🎓 SDG 4 — Quality Education</div>
+        <h1>India School<br>Dropout Analysis</h1>
+        <p>
+            A comprehensive analytical dashboard built on UDISE+ data — 
+            tracking dropout patterns across states, districts, genders, 
+            and socioeconomic factors to drive evidence-based policy action.
+        </p>
+
+        <div class="stats-row">
+            <div class="stat">
+                <div class="stat-num">36+</div>
+                <div class="stat-label">States & UTs</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num">7</div>
+                <div class="stat-label">Analytics Categories</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num">5 Yrs</div>
+                <div class="stat-label">Trend Data</div>
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">📍</div>
+                Regional hotspot analysis by state & district
+            </div>
+            <div class="feature">
+                <div class="feature-icon">⚖️</div>
+                Gender inequality & socioeconomic impact tracking
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🔗</div>
+                Correlation matrix & infrastructure factor mapping
+            </div>
+            <div class="feature">
+                <div class="feature-icon">📈</div>
+                Year-over-year trend analysis with predictive insights
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Login Right ── -->
+    <div class="login-panel">
+        <div class="login-card">
+            <div class="login-logo">📊</div>
+            <h2>Welcome Back</h2>
+            <p class="subtitle">Sign in to access the analysis dashboard</p>
+
+            {% if error %}
+            <div class="error-banner">
+                ⚠️ {{ error }}
+            </div>
+            {% endif %}
+
+            <form method="POST" action="{% url 'login' %}">
+                {% csrf_token %}
+                <div class="field">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Enter your username" autocomplete="username" required>
+                </div>
+                <div class="field">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" autocomplete="current-password" required>
+                </div>
+                <button type="submit" class="login-btn">Sign In →</button>
+            </form>
+
+            <div class="hint">
+                <strong>Demo credentials:</strong><br>
+                Username: <strong>admin</strong> &nbsp;|&nbsp; Password: <strong>admin123</strong>
+            </div>
+
+            <div class="footer-note">
+                SDG 4 · India School Dropout Analysis System<br>
+                Powered by UDISE+ Open Data
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{% extends 'dashboard/base.html' %}
+{% block content %}
+<h1>Policy Impact (Time Series)</h1>
+<p style="color: #a0a0b5; margin-bottom: 30px;">Longitudinal tracking on national dropout reductions.</p>
+<div class="card" style="max-width: 900px; margin: 0 auto;">
+    <img src="data:image/png;base64,{{ g_perf }}" />
+    <p style="color:#a0a0b5; font-size: 0.9rem; text-align:left; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px; margin-top: 20px;">Displays trajectory shifts across states year-over-year indicating the positive or negative momentum of underlying SDG 4 policies.</p>
+</div>
+{% endblock %}

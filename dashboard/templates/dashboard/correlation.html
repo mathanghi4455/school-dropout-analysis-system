@@ -1,0 +1,25 @@
+{% extends 'dashboard/base.html' %}
+{% block content %}
+<div style="max-width: 1000px; margin: 0 auto;">
+    <h1 style="text-align:left;">Socioeconomic & Infrastructure Matrices</h1>
+    <p style="text-align:left; color: #ffb6c1; margin-bottom: 30px;">Algorithmic scatter plotting of dropout triggers mapped against physical institutional capital.</p>
+
+    <div class="card" style="text-align: center; margin-bottom: 30px;">
+        <img src="data:image/png;base64,{{ g_corr }}" style="width:100%; border-radius: 8px; max-width: 800px; margin: 0 auto;"/>
+    </div>
+
+    <div class="card" style="background: rgba(255, 20, 147, 0.1); border: 1px solid rgba(255, 105, 180, 0.5); text-align: left;">
+        <h3 style="color: #fff; margin-top: 0; border-bottom: 2px solid #ff1493; padding-bottom: 10px;">📊 Strategic Policy Blueprint for Retention</h3>
+        <p style="color: #ffe6f0; font-size: 0.95rem; line-height: 1.6;">
+            <strong>Fundamental Challenge Insight:</strong> Multi-variable correlation plotting confirms that baseline poverty is exponentially magnified by institutional decay. Students originating from low-income clusters are mathematically shown to rapidly abandon their education if constrained within deteriorating infrastructure loops.
+        </p>
+        <p style="color: #ffe6f0; font-size: 0.95rem; line-height: 1.6; margin-top: 15px;">
+            <strong>Private Policy Interventions:</strong>
+            <ul style="color: #ffb199; font-size: 0.9rem; padding-left: 20px;">
+                <li style="margin-bottom:10px;"><strong>Private-Public Partnerships (PPP):</strong> Policymakers must incentivize aggressive private capital scaling directly targeting the deeply clustered "high-decay / low-income" zones identified on the scatter mesh above.</li>
+                <li><strong>Conditional Capital Deployments (CCTs):</strong> Construct sophisticated socio-economic safety nets, legally contingent upon greater than 85% attendance, radically fracturing the transition of students into unregulated child-labor paradigms.</li>
+            </ul>
+        </p>
+    </div>
+</div>
+{% endblock %}
